@@ -1,12 +1,12 @@
 @extends('home')
 @section('content')
+<br><br><br><br>
+<div class="w-full max-w-2xl mx-auto mt-10 mb-6 mt-5">
 
-<div class="w-full max-w-2xl mx-auto mt-10 mb-6">
-<div class="flex justify-center">
-  <h2 class="text-3xl font-bold mb-10">Inscription</h2>
-</div>
   <form method="post" action="{{route('register')}}" enctype="multipart/form-data" >
   @csrf
+  <h2 class="text-xl font-bold  mb-6 mx-auto">Création du compte</h2>
+
     <div class="grid grid-cols-2 gap-6">
       <div class="mb-6">
         <label for="nom" class="block mb-2 text-sm font-medium text-gray-900">Nom</label>

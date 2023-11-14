@@ -37,7 +37,11 @@
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                        
+                        <div class="sb-sidenav-menu-heading">Core</div>
+                            <a class="nav-link"  href="{{route('manager-admin.dashboard')}}" >
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Dashboard
+                            </a>
                             <div class="sb-sidenav-menu-heading">Administration</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -79,7 +83,11 @@
                         @yield('content')
                   
         </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+
         <script src="{{url('js/scripts.js')}}"></script>
     </body>
 </html>

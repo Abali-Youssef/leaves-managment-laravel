@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Providers\FamilialeState;
+use App\Mail\AccountActivated;
+use App\Mail\AccountDesactivated;
+use Illuminate\Support\Facades\Mail;
 
 class UsersManagementController extends Controller
 {
@@ -250,6 +253,7 @@ $users=DB::table('users')
         $user =User::find($id);
         $user->verifie = true;
         $user->save();
+        Mail::to($user->email)->send(new AccountActivated($user));
         return redirect()->route('users.index')->with('success', 'Enregistré avec succès');
     }
     public function activate($id)
@@ -257,6 +261,7 @@ $users=DB::table('users')
         $user =User::find($id);
         $user->user_active=true;
         $user->save();
+        Mail::to($user->email)->send(new AccountActivated($user));
         return redirect()->route('users.index')->with('success', 'Activé avec succès');
     }
     public function desactivate($id)
@@ -264,6 +269,7 @@ $users=DB::table('users')
         $user =User::find($id);
         $user->user_active=false;
         $user->save();
+        Mail::to($user->email)->send(new AccountDesactivated($user));
         return redirect()->route('admin.users.desactives')->with('success', 'Désavtivé avec succès');
         
 

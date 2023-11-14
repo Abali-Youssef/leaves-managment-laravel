@@ -10,6 +10,7 @@
         <link href="{{ url('css/styles.css') }}" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     </head>
     <body>
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -38,9 +39,13 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             
-                           
+                        <div class="sb-sidenav-menu-heading">Core</div>
+                            <a class="nav-link"  href="{{route('manager-admin.dashboard')}}" >
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Dashboard
+                            </a>
                             <div class="sb-sidenav-menu-heading">Administration</div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <a class="nav-link collapsed"data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Congés
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -66,8 +71,6 @@
                                     <a class="nav-link" href="{{route('holidays.index')}}">Tous les calendriers</a>
                                 </nav>
                             </div>
-                          
-                            
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
@@ -82,8 +85,11 @@
                         @yield('content')
                   
         </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+
         <script src="{{url('js/scripts.js')}}"></script>
     </body>
 </html>

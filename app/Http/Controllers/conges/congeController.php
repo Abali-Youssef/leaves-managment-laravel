@@ -32,7 +32,41 @@ class congeController extends Controller
           return view('auth.manager.conges.suggestionForm',['conge'=>$conge]);   
 
     }
+    public function dashboard(){
+        $congesEnCours = Conge::with('user.departement')->where([['status','=','Accordé'],['date_debut','<=',Carbon::today()],['date_fin','>=',Carbon::today()]])->count();
+        $demandeAnnulation = Conge::with('user.departement')->where([['status','=','annulation...'],['date_debut','>=',Carbon::today()]])->count();
+        $congeAvenir = Conge::with('user.departement')->where([["status","=","Accordé"],['date_debut','>',Carbon::today()]])->count();
+        $nouvellesDemandes = Conge::with('user.departement')
+        ->where([["status","Pending"],['date_debut','>=',Carbon::today()]])
+        ->orwhere([["status","proposé"],['date_debut','>=',Carbon::today()]])
+        ->count();
 
+        $user=Auth::user();
+        if($user->role=='admin'){
+            return view('auth.admin.dashboard',compact('congesEnCours', 'demandeAnnulation','congeAvenir','nouvellesDemandes'));   
+        }
+        return view('auth.manager.dashboard',compact('congesEnCours', 'demandeAnnulation','congeAvenir','nouvellesDemandes'));   
+
+    }
+    
+    public function getCongesByMonth(){
+        $leavesByMonth = Conge::select(
+            DB::raw('MONTH(created_at) as month'),
+            DB::raw('YEAR(created_at) as year'),
+            DB::raw('COUNT(*) as total_leaves')
+        )
+        ->whereYear('created_at', '=', now()->year) // Add this condition for the current year
+        ->groupBy('year', 'month')
+        ->orderBy('year', 'asc')
+        ->orderBy('month', 'asc')
+        ->get();
+        return response()->json([
+            "status" => 1,
+            "message" => "leave list",
+            "data" => $leavesByMonth,
+        ], 200);
+        
+    }
 
     public function storeConge(Request $request){
 
@@ -165,7 +199,7 @@ public function searchAllPendingConges(Request $request){
 }
 
 public function allNotPendingConges(){ 
-    $conges = Conge::with('user.departement')->where([["status","=","Accordé"],['date_debut','>=',Carbon::today()]])->orderBy('id','desc')->paginate(3);
+    $conges = Conge::with('user.departement')->where([["status","=","Accordé"],['date_debut','>',Carbon::today()]])->orderBy('id','desc')->paginate(3);
     return view('auth.manager.conges.all-demands',['conges'=>$conges]);
 }
 
@@ -185,7 +219,7 @@ public function searchAllNotPendingConges(Request $request){
 
 
 public function inProgressConges(){ 
-    $conges = Conge::with('user.departement')->where([['status','=','Accordé'],['date_debut','<=',Carbon::today()],['date_fin','>=',Carbon::today()],['status','=','Accordé']])->orderBy('id','desc')->paginate(3);
+    $conges = Conge::with('user.departement')->where([['status','=','Accordé'],['date_debut','<=',Carbon::today()],['date_fin','>=',Carbon::today()]])->orderBy('id','desc')->paginate(3);
 
     return view('auth.manager.conges.inProgress-conge',['conges'=>$conges]);
 }
@@ -246,6 +280,7 @@ public function delete($id){
         return redirect()->back();
  
 }
+
 public function userNotPendingConges($id){  
     $conges = Conge::where("user_id",$id)->where([["status","!=","proposé"],['date_fin','>=',Carbon::today()]])->orderBy('date_debut','desc')->paginate(6);
     return view('auth.employe.my-demands',['conges'=>$conges]);

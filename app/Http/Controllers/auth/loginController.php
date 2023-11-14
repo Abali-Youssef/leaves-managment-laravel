@@ -27,9 +27,9 @@ class loginController extends Controller
             $request->session()->regenerate();
             $user=Auth::user();
             if($user->role=='admin'){
-                return redirect()->route('users.index');
+                return redirect()->route('manager-admin.dashboard');
             }else if($user->role=='manager'){
-                return redirect()->route('manager.conge.new-demands');
+                return redirect()->route('manager-admin.dashboard');
             }
             return redirect()->route('employe.Allconges',['id'=>$user->id]);
         }

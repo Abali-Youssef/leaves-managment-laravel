@@ -24,8 +24,8 @@ use App\Http\Controllers\employe\EmployeController;
 */
 
 Route::get('/', function () {
-    return view('auth.login');
-});
+    return view('welcome');
+})->name('home');
 //geust
 Route::get('/login',[loginController::class, 'login'] )->name('login');
 Route::post('/login',[loginController::class, 'authenticate'] )->name('login');
@@ -43,6 +43,8 @@ Route::post('/reset-password',[passwordResetController::class, 'resetPassword'] 
 Route::middleware(['auth', 'hasRole:admin,manager'])->group(function () {
 Route::get('/users/index',[UsersManagementController::class, 'index'] )->name('users.index');
 Route::get('users/search',[UsersManagementController::class, 'searchUsers'] )->name('users.search');
+Route::get('/dashboard',[congeController::class, 'dashboard'] )->name('manager-admin.dashboard');
+Route::get('/congeByMonths',[congeController::class, 'getCongesByMonth'] )->name('manager-admin.congeByMonth');
 
 });
 

@@ -20,8 +20,29 @@ class HolidayController extends Controller
 
     //this method for showing holidays in the employee dashboard
     public function holidays(){
-        $holidays=DB::table('holidays')->orderBy('holiday_date')->paginate(5);
-        return view('auth.employe.index-holidays',['holidays'=>$holidays]);
+        $holidays=DB::table('holidays')->pluck('holiday_date', 'description')->toArray();
+        //national holidays
+        $additionalHolidays = [
+              'Nouvel an'=>Carbon::now()->year.'-01-01',
+              'Manifeste de l\'indépendance'=>Carbon::now()->year.'-01-11',           
+             'Nouvel an Amazigh'=>Carbon::now()->year.'-01-12' ,
+              'Fête du Travail'=>Carbon::now()->year.'-05-01',
+              'Fête du Trône'=>Carbon::now()->year.'-07-30',
+              'Allégeance Oued Eddahab'=>Carbon::now()->year.'-08-14',           
+              'Révolution du Roi et du Peuple'=>Carbon::now()->year.'-08-20',
+              'Fête de la Jeunesse'=>Carbon::now()->year.'-08-21',
+              'Marche verte'=>Carbon::now()->year.'-11-06',
+              'Fête de l\'indépendance'=>Carbon::now()->year.'-11-18',           
+        ];
+        
+        // Merge the original and additional arrays
+        $allHolidays = array_merge($holidays, $additionalHolidays);
+        //this will sord the given array by date
+        uasort($allHolidays, function ($a, $b) {
+            return strtotime($b) - strtotime($a);
+        });
+        
+        return view('auth.employe.index-holidays',['holidays'=>$allHolidays]);
     }
    
     public function create()

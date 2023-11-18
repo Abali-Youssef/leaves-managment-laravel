@@ -78,7 +78,7 @@
     </div>
     </div>
     
-    <div class="grid grid-cols-3 gap-6">
+    <div class="grid grid-cols-4 gap-6">
     <div class="mb-6">
         <label for="nationalite" class="block mb-2 text-sm font-medium text-gray-900">Nationalité</label>
         <input type="text" id="nationatlite" name="nationalite" value={{$user->nationalite}} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="votre nationalité">
@@ -102,6 +102,13 @@
         </select>
         @if($errors->has('situation'))
 							<span class="text-red-600">{{ $errors->first('situation') }}</span>
+		@endif
+      </div>
+      <div class="mb-6">
+        <label for="score" class="block mb-2 text-sm font-medium text-gray-900">Score</label>
+        <input type="text" id="score" name="score" value={{$user->score}} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="votre score">
+        @if($errors->has('score'))
+							<span class="text-red-600">{{ $errors->first('score') }}</span>
 		@endif
       </div>
     </div>

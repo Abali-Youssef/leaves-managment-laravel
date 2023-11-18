@@ -24,7 +24,7 @@ class UsersManagementController extends Controller
             ->select('users.*', 'departements.depart_name as departement_name')
             ->where('user_active', '=', true)
             ->where('verifie', '=', true)
-            ->paginate(8);
+            ->paginate(5);
             if (Auth::user()->role=='admin'){
             return view('auth.admin.index-users',['users'=>$users]);
             }
@@ -43,7 +43,7 @@ $users=DB::table('users')
             ->where('users.user_active', '=', true)
             ->where('users.verifie', '=', true)
             ->where('users.last_name', 'LIKE', '%' .  $request->input('search') . '%')
-            ->paginate(4);
+            ->paginate(5);
     $users->appends($request->all());
     if ( Auth::user()->role=='admin'){
         return view('auth.admin.index-users',['users'=>$users]);
@@ -63,7 +63,7 @@ $users=DB::table('users')
             ->select('users.*', 'departements.depart_name as departement_name')
             ->where('user_active', '=', true)
             ->where('verifie', '=', false)
-            ->paginate(4);
+            ->paginate(5);
         return view('auth.admin.new-registred-users',['users'=>$users]);
     }
 
@@ -75,7 +75,7 @@ $users=DB::table('users')
                 ->where('users.user_active', '=', true)
                 ->where('users.verifie', '=', false)
                 ->where('users.last_name', 'LIKE', '%' .  $request->input('search') . '%')
-                ->paginate(4);
+                ->paginate(5);
         
         $users->appends($request->all());
         return view('auth.admin.new-registred-users',['users'=>$users]);
@@ -90,7 +90,7 @@ $users=DB::table('users')
             ->select('users.*', 'departements.depart_name as departement_name')
             ->where('user_active', '=', false)
             ->where('verifie', '=', true)
-            ->paginate(4);
+            ->paginate(5);
         return view('auth.admin.desactivated-users',['users'=>$users]);
     }
 
@@ -102,7 +102,7 @@ $users=DB::table('users')
                 ->where('users.user_active', '=', false)
                 ->where('users.verifie', '=', true)
                 ->where('users.last_name', 'LIKE', '%' .  $request->input('search') . '%')
-                ->paginate(4);
+                ->paginate(5);
         
         $users->appends($request->all());
         return view('auth.admin.desactivated-users',['users'=>$users]);
@@ -204,6 +204,7 @@ $users=DB::table('users')
             'poste_ar' => ['required'],
             'datenaissance' => ['required', 'date'],
             'phonenumber' => ['required', 'numeric','digits:10'],
+            'score' => ['required', 'numeric'],
             'email' => ['required', 'string', 'email'],
         ]);
         $user = User::find($id);
@@ -232,6 +233,7 @@ $users=DB::table('users')
         $user->situation = $request->situation;
         $user->genre = $request->genre;
         $user->role = $request->role;
+        $user->score = $request->score;
         $user->poste = $request->poste;
         $user->poste_ar =$request->poste_ar;
         $user->date_naissance = $request->datenaissance;

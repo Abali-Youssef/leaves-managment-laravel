@@ -122,7 +122,7 @@ async function processData() {
           yAxes: [{
             ticks: {
               min: 0,
-              max: 20,
+              max: Math.max(...result)+1,
               maxTicksLimit: 5
             },
             gridLines: {

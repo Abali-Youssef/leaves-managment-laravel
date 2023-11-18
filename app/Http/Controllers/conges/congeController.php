@@ -69,7 +69,7 @@ class congeController extends Controller
     }
 
     public function storeConge(Request $request){
-
+        //validation
         $request->validate([
             "date_debut"=>['before_or_equal:date_fin','after:today'],
             "user_id"=>['required' ]
@@ -77,8 +77,36 @@ class congeController extends Controller
         
         $finishingDate = Carbon::parse($request->input('date_fin'));
         $startingDate = Carbon::parse($request->input('date_debut'));
-
+        // get all holidays in within the leave's range
         $holidays = Holiday::where([['holiday_date', '>=', $startingDate],['holiday_date', '<=', $finishingDate]])->pluck('holiday_date')->toArray();
+        //list of national holidays, those dates are alwaus fixed accorss the years
+        $nationalHolidays = [
+            Carbon::now()->year.'-01-01', 
+            Carbon::now()->year.'-01-12', 
+            Carbon::now()->year.'-01-11', 
+            Carbon::now()->year.'-05-01',             
+            Carbon::now()->year.'-07-30', 
+            Carbon::now()->year.'-08-14', 
+            Carbon::now()->year.'-08-20',             
+            Carbon::now()->year.'-08-21', 
+            Carbon::now()->year.'-11-06', 
+            Carbon::now()->year.'-11-18', 
+        ];
+        
+        foreach ($nationalHolidays as $nationalHoliday) {
+            // Convert the string to a Carbon date object
+            $carbonDate = Carbon::parse($nationalHoliday);
+            
+            // Check if the date is within the specified range
+            if ($carbonDate->greaterThanOrEqualTo($startingDate) && $carbonDate->lessThanOrEqualTo($finishingDate)) {
+                // Add the holiday to the array of holidays
+                $holidays[] = $nationalHoliday;
+            }
+        }
+        //remove  redundant (duplicate) values
+        $holidays=array_unique($holidays);
+        
+        // get user's leaves
         $user_conges=Conge::where([["user_id","=",$request->user_id]])->get();
         
         foreach($user_conges as $conge){
@@ -98,6 +126,7 @@ class congeController extends Controller
         $weekendDays = $startingDate->diffInDaysFiltered(function ($date) {
             return $date->isWeekend();
         }, $finishingDate);
+        
         $finishingDate->isWeekend()?$weekendDays++:0;
         $holidayDays = count($holidays);
         $totalDuration = $startingDate->diffInDays($finishingDate)+1;
@@ -627,7 +656,7 @@ public function generateDemande($id){
     <br><br><br>
     <h2 class="title">DEMANDE DE CONGE</h2>
     
-    <h3 class="sub-title">Année '.Carbon::now()->subYear()->year.'-'.Carbon::now()->year.'</h3>
+    <h3 class="sub-title">Année '.Carbon::now()->year.'</h3>
     <div style="height: 200vh">  </div>
     <p></p>
     
@@ -671,7 +700,7 @@ public function generateDemande($id){
     <div></div>
     <div></div>
     <div></div>
-    <p>Avis du responsable du pôle :</p>
+    <p>Avis du responsable  :</p>
     ';
     // // Set PDF properties and content
     

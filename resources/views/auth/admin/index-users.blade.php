@@ -14,12 +14,13 @@
 <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Les utilisateurs actifs</h1>
+                        <h1 class="mt-4">Utilisateurs </h1>
                         <ol class="breadcrumb mb-4">
                             
                         </ol>
                         <div class="d-flex justify-content-between mb-3">
-  <a href="{{route('users.create')}}" class="btn btn-primary"><i class="fa fa-add"></i></a>
+  <a href="{{route('users.create')}}" class="btn btn-primary"><i class="fa fa-add ml-3"></i></a>
+
 
   <form action="{{route('users.search')}}" method="get"> <div class="form-group">
     @csrf
@@ -75,6 +76,7 @@
       @csrf
       <button type="submit"  class="btn btn-sm btn-danger" onclick="submitForm(event,'voulez-vous désactiver cet utilisateur ?','Désactiver')"><i class="fa fa-ban" aria-hidden="true"></i></button>
     </form>
+
   </div></td>
                                         </tr>
                                         @endforeach

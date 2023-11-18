@@ -12,29 +12,29 @@
 </form>
  
 </div>
-                        <div class="card mb-4">
+                        <div class="card mb-4" >
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
                                 Liste des jours fériés
                             </div>
-                            <div class="card-body">
+                            <div class="card-body" style="max-height: 70vh !important;overflow:scroll !important;">
                             <div class="table-responsive">
                             <table class="table">
   <thead>
   <tr>
                                             
-                                            <th>intitulé</th>
-                                            <th>date</th>
+                                            <th>Intitulé</th>
+                                            <th>Date</th>
                                             
                                         </tr>
   </thead>
   <tbody>
-  @foreach($holidays as $holiday)
+  @foreach($holidays as $key => $value)
                                         <tr>
                                         
                                             
-                                            <td>{{$holiday->description}}</td>
-                                            <td>{{$holiday->holiday_date}}</td>
+                                            <td>{{$key}}</td>
+                                            <td><b>{{$value}}</b></td>
                                           
                                             
                     
@@ -44,7 +44,7 @@
   </tbody>
   
 </table>
-{{ $holidays->links() }}
+
 
 </div>
                             </div>
